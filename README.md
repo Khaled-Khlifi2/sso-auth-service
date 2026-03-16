@@ -1,7 +1,7 @@
 # SSO Auth Microservice
 
 Auth complète avec **2FA TOTP** et **OAuth2 (Google / GitHub)**.
-PostgreSQL local — aucun Docker, aucun script Bash.
+PostgreSQL local.
 
 **FastAPI · PostgreSQL · Redis · JWT · 2FA TOTP · OAuth2**
 
