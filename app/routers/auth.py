@@ -48,7 +48,7 @@ async def login(
     request: Request,
     db: AsyncSession = Depends(get_db),
 ):
-    await rate_limit(f"login:{get_client_ip(request)}", limit=10, window_sec=60)
+    await rate_limit(f"login:{get_client_ip(request)}", limit=4, window_sec=180)
     return await svc.login(body.email, body.password, request, db)
 
 

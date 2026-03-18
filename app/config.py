@@ -29,7 +29,7 @@ class Settings(BaseSettings):
 
     CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173"]
 
-    MAX_LOGIN_ATTEMPTS:   int = 5
+    MAX_LOGIN_ATTEMPTS:   int = 2
     LOCKOUT_DURATION_MIN: int = 15
 
     TOTP_ISSUER: str = "SSO Auth"

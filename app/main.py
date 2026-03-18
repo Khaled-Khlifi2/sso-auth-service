@@ -104,12 +104,13 @@ async def health():
 
     try:
         import redis.asyncio as aioredis
-        r = aioredis.from_url(settings.REDIS_URL, socket_timeout=2)
+        r = aioredis.from_url(settings.REDIS_URL, socket_timeout=3)
         await r.ping()
         await r.aclose()
-    except Exception:
+    except Exception as e:
         result["redis"]  = "unavailable (fail-open actif)"
         result["status"] = "degraded"
+        print(f"[DEBUG] Redis health check failed: {e}")
 
     return result
 

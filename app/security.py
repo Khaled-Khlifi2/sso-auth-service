@@ -139,7 +139,7 @@ async def rate_limit(key: str, limit: int, window_sec: int) -> None:
     """Bloque si > limit requêtes dans window_sec secondes. Fail-open si Redis absent."""
     try:
         import redis.asyncio as aioredis
-        r    = aioredis.from_url(settings.REDIS_URL, decode_responses=True, socket_timeout=2)
+        r    = aioredis.from_url(settings.REDIS_URL, decode_responses=True, socket_timeout=3)
         pipe = r.pipeline()
         pipe.incr(key)
         pipe.expire(key, window_sec)
@@ -160,7 +160,7 @@ async def rate_limit(key: str, limit: int, window_sec: int) -> None:
 async def check_lockout(user_id: int) -> None:
     try:
         import redis.asyncio as aioredis
-        r   = aioredis.from_url(settings.REDIS_URL, decode_responses=True, socket_timeout=2)
+        r   = aioredis.from_url(settings.REDIS_URL, decode_responses=True, socket_timeout=6)
         val = await r.get(f"lock:{user_id}")
         await r.aclose()
         if val and int(val) >= settings.MAX_LOGIN_ATTEMPTS:
@@ -174,7 +174,7 @@ async def check_lockout(user_id: int) -> None:
 async def record_failed_login(user_id: int) -> None:
     try:
         import redis.asyncio as aioredis
-        r    = aioredis.from_url(settings.REDIS_URL, decode_responses=True, socket_timeout=2)
+        r    = aioredis.from_url(settings.REDIS_URL, decode_responses=True, socket_timeout=5)
         pipe = r.pipeline()
         pipe.incr(f"lock:{user_id}")
         pipe.expire(f"lock:{user_id}", settings.LOCKOUT_DURATION_MIN * 60)
